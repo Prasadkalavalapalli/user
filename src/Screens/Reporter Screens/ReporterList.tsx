@@ -16,7 +16,7 @@ import { pallette } from '../helpers/colors';
 import { regular, medium, semibold, bold } from '../helpers/fonts';
 import { h, w, adjust } from '../../constants/dimensions';
 import ToastMessage from '../helpers/ToastMessage';
-import { userAPI } from '../../Axios/Api';
+import { reporterAPI, userAPI } from '../../Axios/Api';
 import ReporterDetailsScreen from './ReporterDetailsScreen';
 import Loader from '../helpers/loader';
 
@@ -48,10 +48,10 @@ const ReporterList = () => {
   // Fetch reporters
   const fetchReporters = async () => {
     try {
-      const response = await userAPI.getReporters();
-      
+      const response = await  reporterAPI.getAllReporters(1);
+      console.log(response);
       if (response.success) {
-        const reportersData = response.data.reporters || response.data || [];
+        const reportersData = response|| [];
         setReporters(reportersData);
         
         // Calculate stats

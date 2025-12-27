@@ -196,27 +196,34 @@ const AccountTabs: React.FC<AccountTabsProps> = ({ navigation }) => {
       </TouchableOpacity>
 
       {/* Navigation Menu List */}
-      <View style={styles.menuList}>
-        {menuItems.map((item) => (
-          <TouchableOpacity 
-            key={item.id} 
-            style={[
-              styles.menuItem, 
-              { marginBottom: item.gap ? 20 : 8 }
-            ]} 
-            onPress={item.onPress}
-          >
-            <FontAwesome5 
-              name={item.icon} 
-              size={18} 
-              color="#444" 
-              style={styles.menuIcon} 
-            />
-            <Text style={styles.menuText}>{item.title}</Text>
-            <Ionicons name="chevron-forward" size={18} color="#999" />
-          </TouchableOpacity>
-        ))}
-      </View>
+     <View style={styles.menuList}>
+  {menuItems.map((item) => {
+    // Hide 'Reporters' menu item if user is reporter
+   if ((user?.role === 'reporter' || user?.role === 'user') && item.title === 'Reporters') {
+  return null;
+}
+    
+    return (
+      <TouchableOpacity 
+        key={item.id} 
+        style={[
+          styles.menuItem, 
+          { marginBottom: item.gap ? 20 : 8 }
+        ]} 
+        onPress={item.onPress}
+      >
+        <FontAwesome5 
+          name={item.icon} 
+          size={18} 
+          color="#444" 
+          style={styles.menuIcon} 
+        />
+        <Text style={styles.menuText}>{item.title}</Text>
+        <Ionicons name="chevron-forward" size={18} color="#999" />
+      </TouchableOpacity>
+    );
+  })}
+</View>
 
       {/* Logout Button */}
       <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>

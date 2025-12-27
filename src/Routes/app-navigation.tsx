@@ -32,6 +32,7 @@ const strings = {
   NewsStatus: 'News Status',
   ReporterHome: 'News',
   home: 'Home',
+  // UserProfile:'User Profile'
 };
 
 
@@ -64,9 +65,11 @@ const AdminHomeStack = () => (
 const UploadStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
    
+   
       <Stack.Screen name="UploadScreen" component={UploadScreen} />
 
-
+   <Stack.Screen name="HelpScreen" component={HelpScreen} />
+    <Stack.Screen name="AccountTabs" component={AccountTabs} />
     {/* Add more upload screens here */}
   </Stack.Navigator>
 );
@@ -86,6 +89,11 @@ const ReporterHomeStack = () => (
      <Stack.Screen name="NewsViewScreen" component={NewsViewScreen} />
   </Stack.Navigator>
 );
+// const UserProfile= () => (
+//   <Stack.Navigator screenOptions={{ headerShown: false }}>
+//     <Stack.Screen name="AccountTabs" component={AccountTabs} />
+//   </Stack.Navigator>
+// );
 
 // Main Tab Navigator
 const TabNav = () => {
@@ -99,7 +107,7 @@ const TabNav = () => {
       title: strings.AdminHome,
       activeIcon: 'home',
       inactiveIcon: 'home-outline',
-      show: user?.role === 'admin' || user?.role === 'user', // Control visibility
+      show: user?.role === 'admin' || user?.role === 'reporter', // Control visibility
     },
     {
       name: strings.upload,
@@ -115,7 +123,7 @@ const TabNav = () => {
       title: strings.ReporterHome,
       activeIcon: 'book-open-page-variant',
       inactiveIcon: 'book-open-page-variant-outline',
-      show: user?.role === 'reporter'|| user?.role === 'admin',
+      show: true, // Show for all users
     },
     {
       name: strings.NewsStatus,
@@ -123,8 +131,16 @@ const TabNav = () => {
       title: strings.NewsStatus,
       activeIcon: 'newspaper-variant',
       inactiveIcon: 'newspaper-variant-outline',
-      show: true, // Show for all users
+      show: user?.role === 'reporter'|| user?.role === 'admin'
     },
+    // {
+    //   name: strings.UserProfile,
+    //   component: UserProfile,
+    //   title: strings.UserProfile,
+    //   activeIcon: 'account-circle',
+    //   inactiveIcon: 'account-circle-outline',
+    //   show: user?.role === 'user', // Show for all users
+    // },
     
   ];
 

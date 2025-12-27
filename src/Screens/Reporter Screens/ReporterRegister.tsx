@@ -21,6 +21,7 @@ import { h, w, adjust } from '../../constants/dimensions';
 import MainHeader from '../helpers/mainheader';
 import ToastMessage from '../helpers/ToastMessage';
 import Header from '../helpers/header';
+import { authAPI } from '../../Axios/Api';
 
 
 const ReporterRegistration = () => {
@@ -41,6 +42,7 @@ const ReporterRegistration = () => {
     idProofNumber: '',
     experience: '',
     specialization: '',
+    roleId:1,
   });
 
   // UI state
@@ -159,12 +161,13 @@ const ReporterRegistration = () => {
         specialization: formData.specialization ? [formData.specialization] : [],
         status: 'pending', // New reporters are pending by default
         createdAt: new Date().toISOString(),
+        roleId:1
       };
 
       console.log('Registering reporter:', registrationData);
 
       // API call - replace with your actual API
-      const response = await userAPI.registerReporter(registrationData);
+      const response = await authAPI.register(registrationData);
 
       if (response.success) {
         setToast({
@@ -187,6 +190,7 @@ const ReporterRegistration = () => {
           idProofNumber: '',
           experience: '',
           specialization: '',
+          roleId:1
         });
 
         // Navigate after delay

@@ -132,8 +132,8 @@ const { user } = useAppContext();
           {
   title: 'Add News',
   icon: 'plus',
-  // onPress: () => navigation.navigate('upload', { screen: 'UploadScreen' }),
-  onPress: () =>{},
+  onPress: () => navigation.navigate('Upload', { screen: 'UploadScreen' }),
+  // onPress: () =>{},
   color: pallette.primary,
 },
     {
@@ -245,6 +245,7 @@ const { user } = useAppContext();
           </View>
         </View>
 
+      {user?.role==='admin'?<View>
         {/* Management Cards */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Management</Text>
@@ -274,7 +275,7 @@ const { user } = useAppContext();
               </TouchableOpacity>
             ))}
           </View>
-        </View>
+        </View></View>:null}
       </ScrollView>
     </SafeAreaView>
   );

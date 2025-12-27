@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
   RefreshControl,
+  Linking,
 } from "react-native";
 import axios from "axios";
 import { pallette } from "../helpers/colors";
@@ -16,9 +17,11 @@ import { useNavigation } from "@react-navigation/native";
 import Header from "../helpers/header";
 import Toast from 'react-native-toast-message';
 import AlertMessage from "../helpers/alertmessage";
-
 import { useAppContext } from "../../Store/contexts/app-context";
 import { userAPI } from "../../Axios/Api";
+import { medium } from "../helpers/fonts";
+import { adjust, h } from "../../constants/dimensions";
+import Loader from "../helpers/loader";
 
 
 interface Note {
@@ -47,15 +50,153 @@ const HelpScreen: React.FC = () => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [alertComponent, setAlertComponent] = useState<React.ReactNode>(null);
   const navigation = useNavigation();
-  // const { contextState } = useAppContext();
-  //   const { userId } = contextState;
+    const { user } = useAppContext();
+    const staticTickets: Ticket[] = [
+  {
+    id: 1,
+    ticketId: "TK-2024-001",
+    issue: "Unable to login to the application",
+    category: "Authentication",
+    email: "user1@gmail.com",
+    status: "Open",
+    comment: "Getting 'Invalid Credentials' error even with correct password",
+    notes: [
+      {
+        id: 101,
+        title: "Initial Troubleshooting",
+        notes: "Asked user to reset password via email"
+      },
+      {
+        id: 102,
+        title: "Follow-up",
+        notes: "User confirmed password reset but still can't login"
+      }
+    ],
+    createdDate: "2024-01-15T10:30:00Z"
+  },
+  {
+    id: 2,
+    ticketId: "TK-2024-002",
+    issue: "Payment gateway not working",
+    category: "Payment",
+    email: "user2@example.com",
+    status: "InProgress",
+    comment: "Credit card payment failing at checkout",
+    notes: [
+      {
+        id: 201,
+        title: "Payment Logs",
+        notes: "Checked transaction logs - gateway timeout"
+      }
+    ],
+    createdDate: "2024-01-16T14:20:00Z"
+  },
+  {
+    id: 3,
+    ticketId: "TK-2024-003",
+    issue: "Profile picture not uploading",
+    category: "Profile",
+    email: "user3@example.com",
+    status: "Resolved",
+    comment: "Error when trying to upload profile image",
+    notes: [
+      {
+        id: 301,
+        title: "Issue Analysis",
+        notes: "File size was exceeding 5MB limit"
+      },
+      {
+        id: 302,
+        title: "Solution",
+        notes: "User resized image and uploaded successfully"
+      }
+    ],
+    createdDate: "2024-01-10T09:15:00Z"
+  },
+  {
+    id: 4,
+    ticketId: "TK-2024-004",
+    issue: "App crashing on startup",
+    category: "Technical",
+    email: "user4@example.com",
+    status: "Closed",
+    comment: "App crashes immediately after splash screen",
+    notes: [
+      {
+        id: 401,
+        title: "Debug Info",
+        notes: "User sent crash logs - memory overflow issue"
+      },
+      {
+        id: 402,
+        title: "Update Required",
+        notes: "Fixed in version 2.1.0, asked user to update"
+      }
+    ],
+    createdDate: "2024-01-05T16:45:00Z"
+  },
+  {
+    id: 5,
+    ticketId: "TK-2024-005",
+    issue: "Notification not received",
+    category: "Notifications",
+    email: "user5@example.com",
+    status: "Open",
+    comment: "Not getting push notifications for new messages",
+    notes: [
+      {
+        id: 501,
+        title: "Permissions Check",
+        notes: "User has granted all required permissions"
+      }
+    ],
+    createdDate: "2024-01-17T11:10:00Z"
+  },
+  {
+    id: 6,
+    ticketId: "TK-2024-006",
+    issue: "Data synchronization error",
+    category: "Sync",
+    email: "user6@example.com",
+    status: "InProgress",
+    comment: "Data not syncing across multiple devices",
+    createdDate: "2024-01-18T13:25:00Z"
+  },
+  {
+    id: 7,
+    ticketId: "TK-2024-007",
+    issue: "Wrong currency displayed",
+    category: "Localization",
+    email: "user7@example.com",
+    status: "Resolved",
+    comment: "App showing USD instead of EUR",
+    notes: [
+      {
+        id: 701,
+        title: "Bug Fix",
+        notes: "Fixed currency detection based on IP location"
+      }
+    ],
+    createdDate: "2024-01-12T08:40:00Z"
+  },
+  {
+    id: 8,
+    ticketId: "TK-2024-008",
+    issue: "Dark mode not working",
+    category: "UI/UX",
+    email: "user8@example.com",
+    status: "Closed",
+    comment: "App remains in light mode despite system dark mode",
+    createdDate: "2024-01-08T15:55:00Z"
+  }
+];
   // Fetch tickets from backend
   const fetchTickets = async () => {
     try {
       if (!refreshing) setLoading(true);
       const res = await userAPI.getAllNews();
       console.log("Fetched tickets:", res.data);
-      setTickets(res.data || []);
+      setTickets(staticTickets||res.data || []);
     } catch (error) {
       console.error("Error fetching tickets:", error);
       Toast.show({
@@ -162,57 +303,91 @@ console.log(tickets);
     return status.toUpperCase();
   };
 
-  const renderTicket = ({ item }: { item: Ticket }) => (
-    <View style={styles.ticketCard}>
-      <View style={styles.ticketHeader}>
-        <View style={styles.ticketIdContainer}>
-          <Text style={styles.ticketId}>#{item.ticketId}</Text>
-          <Text style={styles.ticketCategory}>{item.category}</Text>
-        </View>
-        {/* <TouchableOpacity 
-        style={styles.deleteButton}
-        onPress={() => handleDeleteTicket(item)}
-      >
-        <Text style={styles.deleteButtonText}>Delete </Text>
-      </TouchableOpacity> */}
-        <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status) + '20' }]}>
-          <Text style={[styles.ticketStatus, { color: getStatusColor(item.status) }]}>
-            {getStatusText(item.status)}
-          </Text>
-        </View>
+  const handleEmailPress = (email) => {
+      if (email) {
+        const emailUrl = `mailto:${email}`;
+      Linking.openURL(emailUrl).catch(() => {
+         Toast.show({
+              type: 'error',
+              text1: 'Email Failed',
+              text2: 'Unable to open email app. Please try again.',
+            });
+        });
+      } else {
+         Toast.show({
+              type: 'error',
+              text1: 'Email Failed',
+              text2: 'Email not available. Please try again.',
+            });
         
+      }
+    };
+  const renderTicket = ({ item }: { item: Ticket }) => (
+  <View style={styles.ticketCard}>
+    <View style={styles.ticketHeader}>
+      <View style={styles.ticketIdContainer}>
+        <Text style={styles.ticketId}>#{item.ticketId}</Text>
+        <Text style={styles.ticketCategory}>{item.category}</Text>
       </View>
-      
-      <Text style={styles.ticketIssue}>{item.issue}</Text>
-      
-      {item.comment ? (
-        <View style={styles.commentContainer}>
-          <Text style={styles.commentLabel}>Description:</Text>
-          <Text style={styles.comment}>💬 {item.comment}</Text>
-        </View>
-      ) : null}
-      
-      {item.notes?.length ? (
-        <View style={styles.notesContainer}>
-          <Text style={styles.notesLabel}>Notes:</Text>
-          {item.notes.map((n) => (
-            <View key={n.id} style={styles.noteItem}>
-              <Text style={styles.noteTitle}> {n.title}</Text>
-              <Text style={styles.noteText}>{n.notes}</Text>
-            </View>
-          ))}
-        </View>
-      ) : null}
-
-      {item.createdDate && (
-        <Text style={styles.createdDate}>
-          Created: {new Date(item.createdDate).toLocaleDateString()}
+      <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status) + '20' }]}>
+        <Text style={[styles.ticketStatus, { color: getStatusColor(item.status) }]}>
+          {getStatusText(item.status)}
         </Text>
-      )}
-
-      
+      </View>
     </View>
-  );
+    
+    <Text style={styles.ticketIssue}>{item.issue}</Text>
+    
+    {item.comment ? (
+      <View style={styles.commentContainer}>
+        <Text style={styles.commentLabel}>Description:</Text>
+        <Text style={styles.comment}>💬 {item.comment}</Text>
+      </View>
+    ) : null}
+    
+    {item.notes?.length ? (
+      <View style={styles.notesContainer}>
+        <Text style={styles.notesLabel}>Notes:</Text>
+        {item.notes.map((n) => (
+          <View key={n.id} style={styles.noteItem}>
+            <Text style={styles.noteTitle}> {n.title}</Text>
+            <Text style={styles.noteText}>{n.notes}</Text>
+          </View>
+        ))}
+      </View>
+    ) : null}
+
+    {item.createdDate && (
+      <Text style={styles.createdDate}>
+        Created: {new Date(item.createdDate).toLocaleDateString()}
+      </Text>
+    )}
+    
+    {/* Condition: Show buttons only for admin AND if ticket is NOT resolved/closed */}
+    {user?.role === 'admin' && 
+     item.status.toLowerCase() !== 'resolved' && 
+     item.status.toLowerCase() !== 'closed' ? (
+      <View>
+        <View style={styles.actionButtons}>
+          <TouchableOpacity
+            style={[styles.actionButton, styles.rejectButton]}
+            onPress={() =>  handleEmailPress ({ email: item.email })}
+          >
+            <Text style={styles.rejectButtonText}>Reply</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            style={[styles.actionButton, styles.approveButton]}
+            onPress={() =>{} }
+          >
+            <Text style={styles.approveButtonText}>Solved</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    ) : null}
+    
+  </View>
+);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -261,7 +436,7 @@ console.log(tickets);
       {loading && !refreshing ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={pallette.primary} />
-          <Text style={styles.loadingText}>Loading tickets...</Text>
+          <Text style={styles.loadingText}><Loader/></Text>
         </View>
       ) : (
         <FlatList
@@ -553,6 +728,38 @@ const styles = StyleSheet.create({
     color: pallette.grey,
     textAlign: "center",
     lineHeight: 20,
+  },
+   actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 12,
+    marginBottom: h * 0.015,
+  },
+  actionButton: {
+    flex: 1,
+    paddingVertical: h * 0.012,
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+  },
+  rejectButton: {
+    backgroundColor: pallette.white,
+    borderColor: pallette.red,
+  },
+  rejectButtonText: {
+    fontSize: adjust(14),
+    fontFamily: medium,
+    color: pallette.red,
+  },
+  approveButton: {
+    backgroundColor: pallette.primary,
+    borderColor: pallette.primary,
+  },
+  approveButtonText: {
+    fontSize:adjust(14),
+    fontFamily: medium,
+    color: pallette.white,
   },
 });
 

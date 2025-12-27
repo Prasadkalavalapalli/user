@@ -21,6 +21,7 @@ import { userAPI } from '../../Axios/Api';
 import ErrorMessage from '../helpers/errormessage';
 import NewsDetails from '../news screen/newsdetail';
 import Loader from '../helpers/loader';
+import { useAppContext } from '../../Store/contexts/app-context';
 
 const PendingNewsScreen = ({ dateFilter }) => {
   const navigation = useNavigation();
@@ -28,7 +29,7 @@ const PendingNewsScreen = ({ dateFilter }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [pendingNews, setPendingNews] = useState([]);
   const [error, setError] = useState(null);
-
+const { user } = useAppContext();
   // Fetch pending news
   const fetchPendingNews = async () => {
     try {
@@ -96,16 +97,7 @@ const PendingNewsScreen = ({ dateFilter }) => {
   };
 const handlePhonePress = (phone): void => {
   const phoneUrl = `tel:${phone}`;
-  
-  Linking.canOpenURL(phoneUrl)
-    .then((supported) => {
-      if (supported) {
-        Linking.openURL(phoneUrl);
-      } else {
-        Alert.alert("Error", "Phone calls are not supported on this device");
-      }
-    })
-    .catch(() => {
+        Linking.openURL(phoneUrl).catch(() => {
       Alert.alert("Error", "Failed to initiate phone call");
     });
 };
@@ -191,6 +183,7 @@ const handlePhonePress = (phone): void => {
 
       {/* Categories */}
       {renderCategories(item.categories || item.tags)}
+       {user?.role==='admin'?<View>
 
       {/* Action Buttons */}
       <View style={styles.actionButtons}>
@@ -216,7 +209,7 @@ const handlePhonePress = (phone): void => {
         >
           <Text style={styles.approveButtonText}>Approved</Text>
         </TouchableOpacity>
-      </View>
+      </View></View>:null}
 
       {/* Separator */}
       <View style={styles.cardSeparator} />

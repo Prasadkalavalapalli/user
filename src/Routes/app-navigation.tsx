@@ -28,80 +28,33 @@ import ProfileScreen from '../Screens/accounts/profile-screen';
 
 // Define your strings (create a strings file or define here)
 const strings = {
-  AdminHome: 'Home',
-  upload: 'Upload',
-  NewsStatus: 'News Status',
-  ReporterHome: 'News',
-  home: 'Home',
-  // UserProfile:'User Profile'
+  ReporterHome: 'News',  
+ UserProfile:'User Profile'
 };
 
 
 
-const ReporterScreen = () => (
-  <View style={styles.screen}>
-    <Text style={styles.screenText}>Reporter Screen</Text>
-  </View>
-);
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 // Stack Navigators for each tab
-const AdminHomeStack = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Home" component={HomeScreen} />
-    <Stack.Screen name="HelpScreen" component={HelpScreen} />
-    <Stack.Screen name="AccountTabs" component={AccountTabs} />
-    <Stack.Screen name="ReporterRegistration" component={ReporterRegistration}/>
-    <Stack.Screen name="ReporterList" component={ReporterList}/>
-    <Stack.Screen name='ReporterDetailsScreen'component={ReporterDetailsScreen}/>
-      <Stack.Screen name='PrivacyPolicy'component={PrivacyPolicy}/>
-       <Stack.Screen name='AboutNewsNow'component={AboutNewsNow}/>
-       <Stack.Screen name='ProfileScreen'component={ProfileScreen}/>
-       
-        {/* Add more admin screens here */}
-  </Stack.Navigator>
-);
-
-const UploadStack = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
-   
-   
-      <Stack.Screen name="UploadScreen" component={UploadScreen} />
-
-   <Stack.Screen name="HelpScreen" component={HelpScreen} />
-    <Stack.Screen name="AccountTabs" component={AccountTabs} />
-    <Stack.Screen name="ReporterRegistration" component={ReporterRegistration}/>
-    <Stack.Screen name="ReporterList" component={ReporterList}/>
-    <Stack.Screen name='ReporterDetailsScreen'component={ReporterDetailsScreen}/>
-      <Stack.Screen name='PrivacyPolicy'component={PrivacyPolicy}/>
-       <Stack.Screen name='AboutNewsNow'component={AboutNewsNow}/>
-       <Stack.Screen name='ProfileScreen'component={ProfileScreen}/>
-    {/* Add more upload screens here */}
-  </Stack.Navigator>
-);
-
-const NewsStatusStack = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="NewsStatusMain" component={NewsDashboard} />
-    <Stack.Screen name="NewsDetails" component={NewsDetails} />
-     <Stack.Screen name="EditPendingNews" component={EditPendingNews} />
-    {/* Add more news status screens here */}
-   
-  </Stack.Navigator>
-);
 
 const ReporterHomeStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
      <Stack.Screen name="NewsViewScreen" component={NewsViewScreen} />
   </Stack.Navigator>
 );
-// const UserProfile= () => (
-//   <Stack.Navigator screenOptions={{ headerShown: false }}>
-//     <Stack.Screen name="AccountTabs" component={AccountTabs} />
-//   </Stack.Navigator>
-// );
+const UserProfile= () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="HelpScreen" component={HelpScreen} />
+    <Stack.Screen name="AccountTabs" component={AccountTabs} />
+    <Stack.Screen name="ReporterRegistration" component={ReporterRegistration}/>
+      <Stack.Screen name='PrivacyPolicy'component={PrivacyPolicy}/>
+       <Stack.Screen name='AboutNewsNow'component={AboutNewsNow}/>
+       <Stack.Screen name='ProfileScreen'component={ProfileScreen}/>
+  </Stack.Navigator>
+);
 
 // Main Tab Navigator
 const TabNav = () => {
@@ -109,23 +62,16 @@ const TabNav = () => {
 const role = user?.role?.toLowerCase();
 console.log(role);
   // Define tabs based on user role (example)
-  const userTabs = [
+  const userTabs = [  
     {
-      name: strings.AdminHome,
-      component: AdminHomeStack,
-      title: strings.AdminHome,
-      activeIcon: 'home',
-      inactiveIcon: 'home-outline',
-      show: role === 'admin' || role === 'reporter', // Control visibility
+      name: strings.UserProfile,
+      component: UserProfile,
+      title: strings.UserProfile,
+      activeIcon: 'account-circle',
+      inactiveIcon: 'account-circle-outline',
+      show: user?.role === 'user', // Show for all users
     },
-    {
-      name: strings.upload,
-      component: UploadStack,
-      title: strings.upload,
-      activeIcon: 'cloud-upload',
-      inactiveIcon: 'cloud-upload-outline',
-      show: role === 'reporter' || role === 'admin',
-    },
+    
     {
       name: strings.ReporterHome,
       component: ReporterHomeStack,
@@ -134,23 +80,7 @@ console.log(role);
       inactiveIcon: 'book-open-page-variant-outline',
       show: true, // Show for all users
     },
-    {
-      name: strings.NewsStatus,
-      component: NewsStatusStack,
-      title: strings.NewsStatus,
-      activeIcon: 'newspaper-variant',
-      inactiveIcon: 'newspaper-variant-outline',
-      show: role === 'reporter'|| role === 'admin'
-    },
-    // {
-    //   name: strings.UserProfile,
-    //   component: UserProfile,
-    //   title: strings.UserProfile,
-    //   activeIcon: 'account-circle',
-    //   inactiveIcon: 'account-circle-outline',
-    //   show: user?.role === 'user', // Show for all users
-    // },
-    
+   
   ];
 
   // Filter tabs based on user role and visibility

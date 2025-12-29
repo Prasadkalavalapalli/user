@@ -12,6 +12,7 @@ import { logoutUser } from "../../Store/redux/AuthSlice";
 import { pallette } from "../helpers/colors";
 import apiService from '../../Axios/Api';
 import LoginScreen from "../login screens/login-screen";
+import ReporterRegistration from "../Reporter Screens/ReporterRegister";
 
 /**
  * Account Tabs Component
@@ -55,10 +56,10 @@ const AccountTabs: React.FC = () => {
   const menuItems = [
     { 
       id: "1", 
-      title: "Reporters", 
+      title: "Join As Reporters", 
       icon: "users", 
-      onPress: () => navigation.navigate('ReporterList'),
-      show: user?.role?.toLowerCase() === 'admin'
+      onPress: () => navigation.navigate('ReporterRegistration'),
+      show: true
     },
     { 
       id: "2", 

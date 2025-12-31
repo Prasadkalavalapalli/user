@@ -693,15 +693,34 @@ ${currentNews.content.length > 300 ? currentNews.content.substring(0, 300) + '..
         <Image source={{ uri: item.mediaUrl || 'https://picsum.photos/400/300' }} style={styles.newsImage} />
         <View style={styles.imageOverlay} />
         
-        <TouchableOpacity 
-          style={styles.filterButton}
-          onPress={handleFilterPress}
-          activeOpacity={0.7}
-        >
-          <Icon name="filter" size={20} color={pallette.white} />
+       {/* <TouchableOpacity style={styles.filterButton} onPress={handleFilterPress}>
+          <Icon name="filter" size={24} color={pallette.white} />
           {filterApplied && <View style={styles.filterBadge} />}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+          <TouchableOpacity 
+        style={{
+          position: 'absolute',
+          top: 40,
+          left: 20,
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          backgroundColor: pallette.primary,
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000,
+        }} 
+        onPress={() => {
+          console.log('BUTTON CLICKED');
+          handleFilterPress();
+        }}
+      >
+        <Icon name="filter" size={20} color={pallette.white} />
+      </TouchableOpacity>
 
+        <View style={styles.categoryBadge}>
+          <Text style={styles.categoryText}>{item.category}</Text>
+        </View>
         <View style={styles.categoryBadge}>
           <Text style={styles.categoryText}>{item.category}</Text>
         </View>
@@ -860,18 +879,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
-  filterButton: {
-    position: 'absolute',
-    top: 40,
-    left: 20,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(203, 18, 18, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1000,
-  },
+  
   filterBadge: {
     position: 'absolute',
     top: 5,

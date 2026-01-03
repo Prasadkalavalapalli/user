@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // ==================== AXIOS CONFIGURATION ====================
 const apiClient = axios.create({
-  baseURL:  'https://e2a7b1160093.ngrok-free.app/api/',
+  baseURL:  'https://backend.newsvelugu.com/api/',
   headers: {
             'Content-Type': 'application/json',
            },

@@ -24,11 +24,12 @@ import Toast from "react-native-toast-message";
  * Company contact information constants
  */
 const COMPANY_CONTACT = {
-  email: "newsnow@gamil.com",
-  phone: "+91 9876543210",
-  formattedPhone: "+91 9876543210",
-  website: "https://newsnow.com/privacy",
-  dpoEmail: "newsnow@gamil.com"
+  email: "newsnowhelpdesk@gmail.com",
+  phone: "+91 9494750137",
+  formattedPhone: "+91 9494750137",
+  website: "https://newsvelugu.com",
+  dpoEmail: "newsnowhelpdesk@gmail.com",
+  address: "News Now Headquarters, Mumbai, India"
 };
 
 /**

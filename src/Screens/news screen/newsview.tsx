@@ -830,7 +830,7 @@ const NewsViewScreen = () => {
           <Text style={styles.emptyText}>No news available</Text>
           <Text style={styles.locationText}>
             {selectedDistrict ? `District: ${selectedDistrict}` : 
-             coordinates ? `Location: ${coordinates.latitude.toFixed(4)}, ${coordinates.longitude.toFixed(4)}` : 
+             coordinates ? `N0 News Available for our location ` : 
              'No location set'}
           </Text>
           <TouchableOpacity 
@@ -948,7 +948,7 @@ const styles = StyleSheet.create({
   },
   locationText: {
     fontSize: 14,
-    fontFamily: medium,
+    fontFamily: bold,
     color: pallette.primary,
     marginTop: 8,
     textAlign: 'center',

@@ -581,19 +581,19 @@ const NewsItem = React.memo(({
         </TouchableOpacity>
 
         {/* Category Badge - Top Right */}
-        <View style={styles.categoryBadge}>
+        {/* <View style={styles.categoryBadge}>
           <Text style={styles.categoryText}>{item.category}</Text>
-        </View>
+        </View> */}
 
         {/* newsType Badge - Below Category */}
-        <View style={styles.newsTypeBadge}>
+        {/* <View style={styles.newsTypeBadge}>
           <Text style={styles.newsTypeBadgeText}>{item.newsType}</Text>
-        </View>
+        </View> */}
 
         {/* Priority Badge - Below newsType */}
-        <View style={styles.priorityBadge}>
+        {/* <View style={styles.priorityBadge}>
           <Text style={styles.priorityText}>{item.priority}</Text>
-        </View>
+        </View> */}
 
         {/* Reporter/Time/Location Overlay - Bottom Left */}
         <View style={styles.imageInfoOverlay}>
@@ -632,7 +632,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageContainer: {
-    height: SCREEN_WIDTH * 0.7,
+    height: SCREEN_WIDTH * 0.9,
     position: 'relative',
   },
   newsImage: {

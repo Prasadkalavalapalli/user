@@ -43,8 +43,8 @@ const AdvertisementComponent = ({ adNumber = 1, adIndex = 0 }) => {
           type: ad.adType || 'banner',
           title: ad.title || 'Advertisement',
           description: ad.description || '',
-          ctaText: ad.callToAction || 'Learn More',
-          linkUrl: ad.link || ad.url || '',
+          ctaText: ad.linkUrl || 'Learn More',
+          linkUrl: ad.linkUrl || ad.url || '',
           imageUrl: ad.image || ad.mediaUrl || '',
           backgroundColor: ad.backgroundColor || pallette.l1,
           textColor: ad.textColor || pallette.white,
@@ -109,9 +109,9 @@ const AdvertisementComponent = ({ adNumber = 1, adIndex = 0 }) => {
     if (currentAd?.linkUrl) {
       try {
         const canOpen = await Linking.canOpenURL(currentAd.linkUrl);
-        if (canOpen) {
+        
           await Linking.openURL(currentAd.linkUrl);
-        }
+        
       } catch (error) {
         console.error('Failed to open URL:', error);
       }

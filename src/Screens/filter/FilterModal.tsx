@@ -84,14 +84,14 @@ const FilterModal = React.memo(({
               />
             </View>
 
-            {/* Category Filter */}
+          {/* Priority Filter */}
             <FilterSection
-              label="Category"
-              items={CATEGORIES}
-              selectedItem={selectedCategory}
-              onSelect={setSelectedCategory}
+              label="Priority"
+              items={PRIORITIES}
+              selectedItem={selectedPriority}
+              onSelect={setSelectedPriority}
             />
-
+            
             {/* News Type Filter */}
             <FilterSection
               label="News Type"
@@ -100,13 +100,17 @@ const FilterModal = React.memo(({
               onSelect={setSelectedNewsType}
             />
 
-            {/* Priority Filter */}
+            {/* Category Filter */}
             <FilterSection
-              label="Priority"
-              items={PRIORITIES}
-              selectedItem={selectedPriority}
-              onSelect={setSelectedPriority}
+              label="Category"
+              items={CATEGORIES}
+              selectedItem={selectedCategory}
+              onSelect={setSelectedCategory}
             />
+
+            
+
+            
           </ScrollView>
 
           {/* Action Buttons */}
